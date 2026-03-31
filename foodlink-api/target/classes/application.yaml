@@ -1,6 +1,14 @@
 spring:
-  application:
-    name: foodlink-api
+  datasource:
+    username: postgres
+    password: postgres
 
-  profiles:
-    active: docker
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
