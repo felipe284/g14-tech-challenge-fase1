@@ -1,7 +1,6 @@
 package com.fiap_g14.foodlink.api.domain;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
