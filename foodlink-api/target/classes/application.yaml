@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: foodlink-api
+
+  profiles:
+    active: docker
