@@ -8,6 +8,7 @@ spring:
     password: postgres
 
   jpa:
+    defer-datasource-initialization: false
     hibernate:
       ddl-auto: validate
     properties:
