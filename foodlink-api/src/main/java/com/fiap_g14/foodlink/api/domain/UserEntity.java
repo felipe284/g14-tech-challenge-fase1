@@ -35,6 +35,15 @@ public class UserEntity {
     private OffsetDateTime dataUltimaAlteracao;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "logradouro", column = @Column(name = "address_logradouro")),
+            @AttributeOverride(name = "numero", column = @Column(name = "address_numero")),
+            @AttributeOverride(name = "complemento", column = @Column(name = "address_complemento")),
+            @AttributeOverride(name = "bairro", column = @Column(name = "address_bairro")),
+            @AttributeOverride(name = "cidade", column = @Column(name = "address_cidade")),
+            @AttributeOverride(name = "uf", column = @Column(name = "address_uf")),
+            @AttributeOverride(name = "cep", column = @Column(name = "address_cep"))
+    })
     private Address address;
 
     @PrePersist
