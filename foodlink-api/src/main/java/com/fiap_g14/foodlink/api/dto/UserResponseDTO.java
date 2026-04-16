@@ -12,7 +12,7 @@ import java.util.UUID;
 public class UserResponseDTO {
 
     private UUID id;
-    private String nome;
+    private String name;
     private String email;
     private String login;
     private OffsetDateTime dataUltimaAlteracao;

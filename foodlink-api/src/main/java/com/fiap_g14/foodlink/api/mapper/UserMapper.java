@@ -5,14 +5,12 @@ import com.fiap_g14.foodlink.api.domain.UserEntity;
 import com.fiap_g14.foodlink.api.dto.AddressResponseDTO;
 import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 
-import java.util.UUID;
-
 public class UserMapper {
 
     public static UserResponseDTO toDTO(UserEntity user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
-                .nome(user.getNome())
+                .name(user.getName())
                 .email(user.getEmail())
                 .login(user.getLogin())
                 .dataUltimaAlteracao(user.getDataUltimaAlteracao())
