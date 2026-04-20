@@ -1,6 +1,6 @@
 package com.fiap_g14.foodlink.api.controller;
 
-import com.fiap_g14.foodlink.api.config.GlobalExceptionHandler;
+import com.fiap_g14.foodlink.api.exception.GlobalExceptionHandler;
 import com.fiap_g14.foodlink.api.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
