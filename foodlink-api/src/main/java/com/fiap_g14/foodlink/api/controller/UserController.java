@@ -39,4 +39,15 @@ public class UserController {
         service.deleteUser(id);
     }
 
+    @Operation(summary = "Buscar usuário por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "400", description = "ID deve ser um UUID válido")
+    })
+    @GetMapping("/{id}")
+    public UserResponseDTO getUserById(@PathVariable UUID id) {
+        return service.getUserById(id);
+    }
+
 }

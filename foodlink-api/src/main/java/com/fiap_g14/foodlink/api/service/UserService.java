@@ -20,6 +20,12 @@ public class UserService {
         return userRepository.findAll().stream().map(UserMapper::toDTO).toList();
     }
 
+    public UserResponseDTO getUserById(UUID id) {
+        return userRepository.findById(id)
+                .map(UserMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+    }
+
     public void deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("Usuário não encontrado");
