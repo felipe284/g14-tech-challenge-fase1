@@ -1,7 +1,9 @@
 package com.fiap_g14.foodlink.api.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String nome;
 
+    @Email(message = "Formato de e-mail inválido")
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -31,6 +34,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String senha;
 
+    @UpdateTimestamp
     @Column(name = "data_ultima_alteracao", nullable = false)
     private OffsetDateTime dataUltimaAlteracao;
 
