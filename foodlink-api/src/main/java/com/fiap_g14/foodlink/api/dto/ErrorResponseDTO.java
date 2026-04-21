@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ErrorResponseDTO {
     private int status;
-    private String message;
+    private Object message;
 }
