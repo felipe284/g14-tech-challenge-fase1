@@ -36,6 +36,7 @@ public class UserEntity {
     private String senha;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserTypeEnum tipoUsuario;
 
     @UpdateTimestamp
