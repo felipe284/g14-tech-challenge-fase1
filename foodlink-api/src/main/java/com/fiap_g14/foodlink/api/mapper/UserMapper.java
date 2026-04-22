@@ -2,10 +2,9 @@ package com.fiap_g14.foodlink.api.mapper;
 
 import com.fiap_g14.foodlink.api.domain.Address;
 import com.fiap_g14.foodlink.api.domain.UserEntity;
-import com.fiap_g14.foodlink.api.dto.AddressResponseDTO;
+import com.fiap_g14.foodlink.api.dto.AddressDTO;
+import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
 import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
-
-import java.util.UUID;
 
 public class UserMapper {
 
@@ -16,14 +15,39 @@ public class UserMapper {
                 .email(user.getEmail())
                 .login(user.getLogin())
                 .dataUltimaAlteracao(user.getDataUltimaAlteracao())
-                .address(toAddressDTO(user.getAddress()))
+                .endereco(toAddressDTO(user.getEndereco()))
                 .build();
     }
 
-    private static AddressResponseDTO toAddressDTO(Address address) {
+    public static UserEntity toEntity(CreateUserRequestDTO userDTO, String passwordHash) {
+        return UserEntity.builder()
+                .nome(userDTO.getNome())
+                .email(userDTO.getEmail())
+                .login(userDTO.getLogin())
+                .senha(passwordHash)
+                .tipoUsuario(userDTO.getTipoUsuario())
+                .endereco(toAddressEntity(userDTO.getEndereco()))
+                .build();
+    }
+
+    public static Address toAddressEntity(AddressDTO addressDTO) {
+        if (addressDTO == null) return null;
+
+        return Address.builder()
+                .logradouro(addressDTO.getLogradouro())
+                .numero(addressDTO.getNumero())
+                .complemento(addressDTO.getComplemento())
+                .bairro(addressDTO.getBairro())
+                .cidade(addressDTO.getCidade())
+                .uf(addressDTO.getUf())
+                .cep(addressDTO.getCep())
+                .build();
+    }
+
+    private static AddressDTO toAddressDTO(Address address) {
         if (address == null) return null;
 
-        return AddressResponseDTO.builder()
+        return AddressDTO.builder()
                 .logradouro(address.getLogradouro())
                 .numero(address.getNumero())
                 .complemento(address.getComplemento())

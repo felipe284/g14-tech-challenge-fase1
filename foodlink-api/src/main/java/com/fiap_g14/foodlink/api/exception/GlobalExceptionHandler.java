@@ -43,6 +43,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDTO(400, ex.getMessage()));
     }
 
+    @ExceptionHandler(DataAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(DataAlreadyExistsException ex) {
+        ErrorResponseDTO responseDTO = new ErrorResponseDTO(409, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseDTO);
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidUUID(MethodArgumentTypeMismatchException ex) {
         if (ex.getRequiredType() == UUID.class) {
