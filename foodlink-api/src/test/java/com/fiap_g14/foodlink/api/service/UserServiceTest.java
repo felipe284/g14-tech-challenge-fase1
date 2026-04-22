@@ -2,7 +2,11 @@ package com.fiap_g14.foodlink.api.service;
 
 import com.fiap_g14.foodlink.api.domain.UserEntity;
 import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
+import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
+import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 import com.fiap_g14.foodlink.api.exception.BusinessException;
+import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
+import com.fiap_g14.foodlink.api.helper.MockHelper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +34,9 @@ class UserServiceTest {
 
     @Mock
     private UserValidator userValidator;
+
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -129,5 +137,39 @@ class UserServiceTest {
 
         assertEquals("Senha atual incorreta", exception.getMessage());
         verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve criar um usuário com sucesso")
+    void testCreateUserSuccessfully() {
+        CreateUserRequestDTO userRequestDTO = MockHelper.getCreateUserRequestDTO();
+
+        when(userRepository.findByEmailAndLogin(userRequestDTO.getEmail(), userRequestDTO.getLogin())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(userRequestDTO.getSenha())).thenReturn("senhaCriptografada");
+        when(userRepository.save(any())).thenReturn(MockHelper.getMockUserEntity());
+
+        UserResponseDTO responseDTO = userService.createUser(userRequestDTO);
+
+        assertEquals("Maria de Souza", responseDTO.getNome());
+        assertEquals("maria@teste.com.br", responseDTO.getEmail());
+        assertEquals("Mariadesouza", responseDTO.getLogin());
+        assertNotNull(responseDTO.getId());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exception quando o usuário já possui email cadastrado")
+    void testThrowExceptionWhenEmailAlreadyExists() {
+        CreateUserRequestDTO userRequestDTO = MockHelper.getCreateUserRequestDTO();
+
+        when(userRepository.findByEmailAndLogin(userRequestDTO.getEmail(), userRequestDTO.getLogin()))
+                .thenReturn(Optional.of(MockHelper.getMockUserEntity()));
+
+        try{
+            userService.createUser(userRequestDTO);
+            fail();
+        } catch (DataAlreadyExistsException e){
+            assertEquals("Já existe um usuário cadastrado com o email: maria@teste.com.br ou login: Mariadesouza", e.getMessage());
+        }
+
     }
 }

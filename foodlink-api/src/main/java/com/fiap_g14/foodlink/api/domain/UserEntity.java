@@ -1,5 +1,6 @@
 package com.fiap_g14.foodlink.api.domain;
 
+import com.fiap_g14.foodlink.api.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -34,6 +35,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String senha;
 
+    @Column(nullable = false)
+    private UserTypeEnum tipoUsuario;
+
     @UpdateTimestamp
     @Column(name = "data_ultima_alteracao", nullable = false)
     private OffsetDateTime dataUltimaAlteracao;
@@ -48,7 +52,7 @@ public class UserEntity {
             @AttributeOverride(name = "uf", column = @Column(name = "address_uf")),
             @AttributeOverride(name = "cep", column = @Column(name = "address_cep"))
     })
-    private Address address;
+    private Address endereco;
 
     @PrePersist
     @PreUpdate

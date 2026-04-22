@@ -15,5 +15,5 @@ public class UserResponseDTO {
     private String email;
     private String login;
     private OffsetDateTime dataUltimaAlteracao;
-    private AddressDTO address;
+    private AddressDTO endereco;
 }

@@ -2,9 +2,7 @@ package com.fiap_g14.foodlink.api.controller;
 
 
 import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
-
 import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
-
 import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 import com.fiap_g14.foodlink.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,12 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +41,7 @@ public class UserController {
             @ApiResponse(responseCode = "429", description = "Dados de entrada inválidos")
     })
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO createUser(@Valid @RequestBody CreateUserRequestDTO userRequestDTO) {
         return service.createUser(userRequestDTO);
     }

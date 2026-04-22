@@ -2,8 +2,10 @@ package com.fiap_g14.foodlink.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
+import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
 import com.fiap_g14.foodlink.api.exception.BusinessException;
 import com.fiap_g14.foodlink.api.exception.GlobalExceptionHandler;
+import com.fiap_g14.foodlink.api.helper.MockHelper;
 import com.fiap_g14.foodlink.api.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -155,5 +156,47 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("Deve retornar 201 quando usuário é criado com sucesso")
+    void testCreateUserSuccess() throws Exception {
+        CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
+        when(userService.createUser(any())).thenReturn(MockHelper.getMockUserResponseDTO());
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        verify(userService, times(1)).createUser(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar 422 quando o campo nome está ausente no body")
+    void testCreateUserMissingNomeField() throws Exception {
+        CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
+        request.setNome(null);
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.status").value(422))
+                .andExpect(jsonPath("$.message").value("O campo nome é obrigatório"));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 422 quando o campo email é inválido")
+    void testCreateUserMissingFields() throws Exception {
+        CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
+        request.setEmail("emailteste.com.br");
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.status").value(422))
+                .andExpect(jsonPath("$.message").value("O campo email deve ser um endereço de email válido"));
     }
 }

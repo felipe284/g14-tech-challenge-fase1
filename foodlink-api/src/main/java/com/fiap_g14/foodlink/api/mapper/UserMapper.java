@@ -15,7 +15,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .login(user.getLogin())
                 .dataUltimaAlteracao(user.getDataUltimaAlteracao())
-                .address(toAddressDTO(user.getAddress()))
+                .endereco(toAddressDTO(user.getEndereco()))
                 .build();
     }
 
@@ -25,7 +25,8 @@ public class UserMapper {
                 .email(userDTO.getEmail())
                 .login(userDTO.getLogin())
                 .senha(passwordHash)
-                .address(toAddressEntity(userDTO.getEndereco()))
+                .tipoUsuario(userDTO.getTipoUsuario())
+                .endereco(toAddressEntity(userDTO.getEndereco()))
                 .build();
     }
 
