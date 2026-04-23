@@ -1,6 +1,5 @@
 package com.fiap_g14.foodlink.api.dto;
 
-import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,5 +15,5 @@ public class UserResponseDTO {
     private String email;
     private String login;
     private OffsetDateTime dataUltimaAlteracao;
-    private AddressResponseDTO address;
+    private AddressDTO endereco;
 }
