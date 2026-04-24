@@ -1,12 +1,15 @@
 package com.fiap_g14.foodlink.api.dto;
 
-import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Getter
 @Builder
-public class AddressResponseDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AddressDTO {
     private String logradouro;
     private String numero;
     private String complemento;
