@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +36,12 @@ public class UserService {
         }
         UserEntity entity = userRepository.save(UserMapper.toEntity(userRequestDTO, passwordEncoder.encode(userRequestDTO.getSenha())));
         return UserMapper.toDTO(entity);
+    }
+
+    public UserResponseDTO getUserById(UUID id) {
+        return userRepository.findById(id)
+                .map(UserMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
     }
 
     public void deleteUser(UUID id) {

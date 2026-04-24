@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -71,4 +72,15 @@ public class UserController {
         service.changePassword(id, request);
 
     }
+    @Operation(summary = "Buscar usuário por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "400", description = "ID deve ser um UUID válido")
+    })
+    @GetMapping("/{id}")
+    public UserResponseDTO getUserById(@PathVariable UUID id) {
+        return service.getUserById(id);
+    }
+
 }
