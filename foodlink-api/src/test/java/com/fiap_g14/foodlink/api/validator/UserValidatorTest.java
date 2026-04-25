@@ -6,6 +6,7 @@ import com.fiap_g14.foodlink.api.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,6 +51,20 @@ class UserValidatorTest {
         );
 
         assertEquals("Senha atual incorreta", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve validar credenciais com sucesso quando a senha estiver correta")
+    void testValidateCredentials_success() {
+        assertDoesNotThrow(() -> userValidator.validateCredentials(user, "senhaAtual123"));
+    }
+
+    @Test
+    @DisplayName("Deve lançar 401 quando senha estiver incorreta ao validar credenciais")
+    void testValidateCredentials_wrongPassword() {
+        BusinessException ex = assertThrows(BusinessException.class, () -> userValidator.validateCredentials(user, "senhaErrada"));
+        assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatus());
+        assertEquals("Login ou senha inválidos", ex.getMessage());
     }
 }
 
