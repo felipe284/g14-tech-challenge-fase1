@@ -82,7 +82,7 @@ class UserServiceTest {
                 .nome("João Silva")
                 .email("joao@email.com")
                 .login("joaosilva")
-                .senha("senhaAtual123")
+                .senha(passwordEncoder.encode("senhaAtual123"))
                 .build();
         ChangePasswordRequestDTO request = new ChangePasswordRequestDTO("senhaAtual123", "novaSenha456");
 
@@ -91,7 +91,7 @@ class UserServiceTest {
 
         assertDoesNotThrow(() -> userService.changePassword(userId, request));
 
-        assertEquals("novaSenha456", user.getSenha());
+        assertEquals( passwordEncoder.encode("novaSenha456"), user.getSenha());
         verify(userRepository, times(1)).findById(userId);
         verify(userValidator, times(1)).validateChangePassword(user, request);
         verify(userRepository, times(1)).save(user);

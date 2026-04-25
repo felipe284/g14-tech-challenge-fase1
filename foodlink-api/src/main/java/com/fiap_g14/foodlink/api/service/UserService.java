@@ -56,7 +56,7 @@ public class UserService {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         userValidator.validateChangePassword(user, changePasswordRequestDTO);
 
-        user.setSenha(changePasswordRequestDTO.getNovaSenha());
+        user.setSenha(passwordEncoder.encode(changePasswordRequestDTO.getNovaSenha()));
         userRepository.save(user);
     }
 }
