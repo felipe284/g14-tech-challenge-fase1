@@ -6,6 +6,7 @@ import com.fiap_g14.foodlink.api.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,16 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserValidatorTest {
 
     private UserValidator userValidator;
+
     private UserEntity user;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @BeforeEach
     void setUp() {
-        userValidator = new UserValidator();
+        userValidator = new UserValidator(passwordEncoder);
+
         user = UserEntity.builder()
                 .nome("João Silva")
                 .email("joao@email.com")
                 .login("joaosilva")
-                .senha("senhaAtual123")
+                .senha( passwordEncoder.encode("senhaAtual123"))
                 .build();
     }
 
