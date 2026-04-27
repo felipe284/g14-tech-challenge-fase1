@@ -1,0 +1,236 @@
+{
+  "info": {
+    "_postman_id": "b44f6f21-0000-4a6f-9f0a-123456789abc",
+    "name": "Foodlink API - G14",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Foodlink API - G14"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"joao.silva\",\n  \"senha\": \"123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Exemplo de resposta",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"userId\": \"00000000-0000-0000-0000-000000000000\",\n  \"login\": \"joao.silva\",\n  \"tipoUsuario\": \"CLIENTE\"\n}",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.userId) {",
+                  "    pm.collectionVariables.set('userId', json.userId);",
+                  "    console.log('userId encontrado', json.userId);",
+                  "  } else {",
+                  "    console.warn('Response não encontrou userId');",
+                  "  }",
+                  "} catch (e) {",
+                  "  console.error('Erro ao atualizar userId:', e);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Listar usuários - GET /users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Exemplo",
+              "status": "OK",
+              "code": 200,
+              "body": "[\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"nome\": \"João Silva\",\n    \"email\": \"joao.silva@email.com\",\n    \"login\": \"joao.silva\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Rua das Flores\",\n      \"numero\": \"123\",\n      \"complemento\": \"Apto 101\",\n      \"bairro\": \"Centro\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01000-000\"\n    }\n  },\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000002\",\n    \"nome\": \"Maria Souza\",\n    \"email\": \"maria.souza@email.com\",\n    \"login\": \"maria.souza\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Av. Paulista\",\n      \"numero\": \"1000\",\n      \"complemento\": \"Sala 202\",\n      \"bairro\": \"Bela Vista\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01310-100\"\n    }\n  },\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000003\",\n    \"nome\": \"Carlos Pereira\",\n    \"email\": \"carlos.pereira@email.com\",\n    \"login\": \"carlos.pereira\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Rua Augusta\",\n      \"numero\": \"500\",\n      \"complemento\": null,\n      \"bairro\": \"Consolação\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01305-000\"\n    }\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Criar usuário - POST /users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"senha\": \"123456789\",\n  \"tipoUsuario\": \"CLIENTE\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 - Usuário criado",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000002\",\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"dataUltimaAlteracao\": \"2025-01-02T10:00:00Z\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Buscar usuário por ID - GET /users/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Usuário",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"{{userId}}\",\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@example.com\",\n  \"login\": \"joao\",\n  \"dataUltimaAlteracao\": \"2025-01-02T10:00:00Z\",\n  \"endereco\": {\n    \"logradouro\": \"Av. Brasil\",\n    \"numero\": \"1000\",\n    \"complemento\": \"Casa\",\n    \"bairro\": \"Jardim\",\n    \"cidade\": \"Rio de Janeiro\",\n    \"uf\": \"RJ\",\n    \"cep\": \"20000-000\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Excluir usuário - DELETE /users/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 - No Content",
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Alterar senha - PATCH /users/change-password/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senhaAtual\": \"123456789\",\n  \"novaSenha\": \"novaSenhaSegura456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/change-password/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "change-password",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 - Senha alterada",
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
