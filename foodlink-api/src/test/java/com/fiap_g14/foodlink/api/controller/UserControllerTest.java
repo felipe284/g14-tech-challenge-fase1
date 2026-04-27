@@ -13,12 +13,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import com.fiap_g14.foodlink.api.dto.PageResponseDTO;
 
 import java.util.UUID;
 
@@ -46,9 +49,54 @@ class UserControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userController)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         objectMapper = new ObjectMapper();
+    }
+
+    @Test
+    @DisplayName("Deve listar usuários com paginação")
+    void testGetAllUsersPagination() throws Exception {
+        var dto = MockHelper.getMockUserResponseDTO();
+        PageResponseDTO response = PageResponseDTO.builder()
+                .content(java.util.List.of(dto))
+                .page(1)
+                .size(10)
+                .totalElements(1)
+                .totalPages(1)
+                .build();
+
+        when(userService.getUsers( ArgumentMatchers.any(), ArgumentMatchers.any(),  ArgumentMatchers.any()) ).thenReturn(response);
+
+        mockMvc.perform(get("/users").param("page","1").param("size","10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page").value(1))
+                .andExpect(jsonPath("$.size").value(10))
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].nome").value(dto.getNome()));
+    }
+
+    @Test
+    @DisplayName("Deve listar usuários com paginação default")
+    void testGetAllUsersDefaultPagination() throws Exception {
+        var dto = MockHelper.getMockUserResponseDTO();
+        PageResponseDTO response = PageResponseDTO.builder()
+                .content(java.util.List.of(dto))
+                .page(0)
+                .size(10)
+                .totalElements(1)
+                .totalPages(1)
+                .build();
+
+        when(userService.getUsers( ArgumentMatchers.any(), ArgumentMatchers.any(),  ArgumentMatchers.any()) ).thenReturn(response);
+
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page").value(0))
+                .andExpect(jsonPath("$.size").value(10))
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.content[0].nome").value(dto.getNome()));
     }
 
     @Test
