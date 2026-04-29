@@ -32,8 +32,8 @@ Antes de iniciar, certifique-se de ter instalado:
 Verifique com:
 
 ```bash
-docker -v
-docker-compose -v
+docker version
+docker compose version
 ```
 
 ---
@@ -43,7 +43,7 @@ docker-compose -v
 ```bash
 # no diretório raiz do repositório
 cd foodlink-api
-docker-compose up --build
+docker compose up --build
 ```
 
 Depois do startup, a API estará disponível por padrão em http://localhost:8080. 
