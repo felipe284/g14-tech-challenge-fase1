@@ -14,10 +14,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -154,6 +160,51 @@ class UserServiceTest {
         assertEquals("maria@teste.com.br", responseDTO.getEmail());
         assertEquals("Mariadesouza", responseDTO.getLogin());
         assertNotNull(responseDTO.getId());
+    }
+
+    @Test
+    @DisplayName("Deve retornar usuários paginados com sucesso")
+    void testGetAllUsersWithPagination() {
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
+        UserEntity user1 = MockHelper.getMockUserEntity();
+        UserEntity user2 = UserEntity.builder()
+                .id(java.util.UUID.randomUUID())
+                .nome("Carlos")
+                .email("carlos@teste.com")
+                .login("carlos")
+                .senha("senha")
+                .tipoUsuario(user1.getTipoUsuario())
+                .build();
+
+        var page = new PageImpl<>(java.util.List.of(user1, user2), pageable, 2);
+
+        when(userRepository.findAll(ArgumentMatchers.<Specification<UserEntity>>any(), ArgumentMatchers.any(Pageable.class))).thenReturn(page);
+        doNothing().when(userValidator).validatePagination(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
+
+        var response = userService.getUsers(0, 10, null);
+
+        assertEquals(0, response.getPage());
+        assertEquals(10, response.getSize());
+        assertEquals(2, response.getTotalElements());
+        assertEquals(1, response.getTotalPages());
+        assertEquals(2, response.getContent().size());
+    }
+
+    @Test
+    @DisplayName("Deve filtrar usuários por nome com paginação")
+    void testGetAllUsersWithNameFilter() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
+        UserEntity user1 = MockHelper.getMockUserEntity();
+        var page = new PageImpl<>(java.util.List.of(user1), pageable, 1);
+
+        when(userRepository.findAll(ArgumentMatchers.<Specification<UserEntity>>any(), ArgumentMatchers.any(Pageable.class))).thenReturn(page);
+
+        var response = userService.getUsers(0 , 10 , "Maria");
+
+        assertEquals(1, response.getTotalElements());
+        assertEquals(1, response.getContent().size());
+        assertEquals("Maria de Souza", response.getContent().get(0).getNome());
     }
 
     @Test

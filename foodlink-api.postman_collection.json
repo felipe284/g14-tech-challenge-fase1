@@ -93,12 +93,17 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/users",
+              "raw": "{{baseUrl}}/users?page=0&size=10&nome=joao",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "users"
+              ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "nome", "value": "" }
               ]
             }
           },
@@ -107,7 +112,7 @@
               "name": "200 - Exemplo",
               "status": "OK",
               "code": 200,
-              "body": "[\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000001\",\n    \"nome\": \"João Silva\",\n    \"email\": \"joao.silva@email.com\",\n    \"login\": \"joao.silva\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Rua das Flores\",\n      \"numero\": \"123\",\n      \"complemento\": \"Apto 101\",\n      \"bairro\": \"Centro\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01000-000\"\n    }\n  },\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000002\",\n    \"nome\": \"Maria Souza\",\n    \"email\": \"maria.souza@email.com\",\n    \"login\": \"maria.souza\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Av. Paulista\",\n      \"numero\": \"1000\",\n      \"complemento\": \"Sala 202\",\n      \"bairro\": \"Bela Vista\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01310-100\"\n    }\n  },\n  {\n    \"id\": \"00000000-0000-0000-0000-000000000003\",\n    \"nome\": \"Carlos Pereira\",\n    \"email\": \"carlos.pereira@email.com\",\n    \"login\": \"carlos.pereira\",\n    \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n    \"endereco\": {\n      \"logradouro\": \"Rua Augusta\",\n      \"numero\": \"500\",\n      \"complemento\": null,\n      \"bairro\": \"Consolação\",\n      \"cidade\": \"São Paulo\",\n      \"uf\": \"SP\",\n      \"cep\": \"01305-000\"\n    }\n  }\n]"
+              "body": "{\n  \"content\": [\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"nome\": \"João Silva\",\n      \"email\": \"joao.silva@email.com\",\n      \"login\": \"joao.silva\",\n      \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n      \"endereco\": {\n        \"logradouro\": \"Rua das Flores\",\n        \"numero\": \"123\",\n        \"complemento\": \"Apto 101\",\n        \"bairro\": \"Centro\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01000-000\"\n      }\n    },\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000002\",\n      \"nome\": \"Maria Souza\",\n      \"email\": \"maria.souza@email.com\",\n      \"login\": \"maria.souza\",\n      \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n      \"endereco\": {\n        \"logradouro\": \"Av. Paulista\",\n        \"numero\": \"1000\",\n        \"complemento\": \"Sala 202\",\n        \"bairro\": \"Bela Vista\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01310-100\"\n      }\n    }\n  ],\n  \"page\": 0,\n  \"size\": 10,\n  \"totalElements\": 2,\n  \"totalPages\": 1\n}"
             }
           ]
         },
