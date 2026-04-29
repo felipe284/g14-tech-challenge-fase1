@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.fiap_g14.foodlink.api.dto.PageResponseDTO;
 import java.util.UUID;
 
 @Tag(name = "Usuários")
@@ -31,8 +31,10 @@ public class UserController {
 
     @Operation(summary = "Listar todos os usuários")
     @GetMapping()
-    public List<UserResponseDTO> getAllUsers() {
-        return service.getAllUsers();
+    public PageResponseDTO getAllUsers(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                      @RequestParam(required = false , defaultValue = "10") Integer size,
+                                      @RequestParam(required = false, name = "name") String name) {
+        return service.getUsers(page , size , name );
     }
 
 
