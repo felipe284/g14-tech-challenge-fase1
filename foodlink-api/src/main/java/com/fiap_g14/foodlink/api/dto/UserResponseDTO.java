@@ -1,5 +1,6 @@
 package com.fiap_g14.foodlink.api.dto;
 
+import com.fiap_g14.foodlink.api.enums.UserTypeEnum;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,4 +17,5 @@ public class UserResponseDTO {
     private String login;
     private OffsetDateTime dataUltimaAlteracao;
     private AddressDTO endereco;
+    private UserTypeEnum tipoUsuario;
 }

@@ -1,15 +1,15 @@
 package com.fiap_g14.foodlink.api.service;
 
+import com.fiap_g14.foodlink.api.domain.Address;
 import com.fiap_g14.foodlink.api.domain.UserEntity;
-import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
-import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
-import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
-import com.fiap_g14.foodlink.api.dto.PageResponseDTO;
+import com.fiap_g14.foodlink.api.dto.*;
 import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
 import com.fiap_g14.foodlink.api.mapper.UserMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -83,5 +83,28 @@ public class UserService {
 
         user.setSenha(passwordEncoder.encode(changePasswordRequestDTO.getNovaSenha()));
         userRepository.save(user);
+    }
+
+
+    public UserResponseDTO updateUser(UUID id, UpdateUserRequestDTO dto) {
+
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+        if(!dto.getEmail().equalsIgnoreCase(user.getEmail())){
+           if (userRepository.existsByEmail(dto.getEmail())){
+               throw new DataAlreadyExistsException("Já existe o email cadastrado: " + dto.getEmail() );
+           }
+        }
+
+        if(!dto.getLogin().equalsIgnoreCase(user.getLogin())){
+            if (userRepository.existsByLogin(dto.getLogin())){
+                throw new DataAlreadyExistsException("Já existe o login cadastrado: " + dto.getLogin() );
+            }
+        }
+
+        UserMapper.updateEntity(dto, user);
+
+        return UserMapper.toDTO(user);
     }
 }
