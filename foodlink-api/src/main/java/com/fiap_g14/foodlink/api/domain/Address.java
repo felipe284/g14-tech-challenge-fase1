@@ -1,17 +1,17 @@
 package com.fiap_g14.foodlink.api.domain;
 
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Embeddable
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Address {
+
 
     private String logradouro;
     private String numero;

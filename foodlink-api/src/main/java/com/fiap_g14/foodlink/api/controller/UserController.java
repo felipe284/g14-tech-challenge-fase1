@@ -1,9 +1,7 @@
 package com.fiap_g14.foodlink.api.controller;
 
 
-import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
-import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
-import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
+import com.fiap_g14.foodlink.api.dto.*;
 import com.fiap_g14.foodlink.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,14 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import com.fiap_g14.foodlink.api.dto.ErrorResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.fiap_g14.foodlink.api.dto.PageResponseDTO;
 import java.util.UUID;
 
 @Tag(name = "Usuários")
@@ -85,6 +81,21 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDTO getUserById(@PathVariable UUID id) {
         return service.getUserById(id);
+    }
+
+
+    @Operation(summary = "Alterar o usuário")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Usuário alterado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Usuário já possui um cadastro", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Erro de Regra de Negócio", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "429", description = "Dados de entrada inválidos", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    @PutMapping ("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponseDTO updateUser(@PathVariable UUID id,@Valid @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+
+        return service.updateUser(id, updateUserRequestDTO);
     }
 
 }

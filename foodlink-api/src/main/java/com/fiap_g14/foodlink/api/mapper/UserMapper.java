@@ -4,6 +4,7 @@ import com.fiap_g14.foodlink.api.domain.Address;
 import com.fiap_g14.foodlink.api.domain.UserEntity;
 import com.fiap_g14.foodlink.api.dto.AddressDTO;
 import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
+import com.fiap_g14.foodlink.api.dto.UpdateUserRequestDTO;
 import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 
 public class UserMapper {
@@ -16,6 +17,7 @@ public class UserMapper {
                 .login(user.getLogin())
                 .dataUltimaAlteracao(user.getDataUltimaAlteracao())
                 .endereco(toAddressDTO(user.getEndereco()))
+                .tipoUsuario(user.getTipoUsuario())
                 .build();
     }
 
@@ -57,4 +59,28 @@ public class UserMapper {
                 .cep(address.getCep())
                 .build();
     }
+
+    
+
+    public static void updateEntity(UpdateUserRequestDTO dto, UserEntity entity) {
+            entity.setNome(dto.getNome());
+            entity.setEmail(dto.getEmail());
+            entity.setLogin(dto.getLogin());
+            entity.setTipoUsuario(dto.getTipoUsuario());
+
+            updateAddress(dto.getEndereco(), entity.getEndereco());
+
+        }
+
+    public static void updateAddress(AddressDTO dto, Address entity) {
+
+            entity.setLogradouro(dto.getLogradouro());
+            entity.setNumero(dto.getNumero());
+            entity.setComplemento(dto.getComplemento());
+            entity.setBairro(dto.getBairro());
+            entity.setCidade(dto.getCidade());
+            entity.setUf(dto.getUf());
+            entity.setCep(dto.getCep());
+    }
+
 }
