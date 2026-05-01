@@ -8,7 +8,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:8080",
+      "value": "http://localhost:8080/api/v1",
       "type": "string"
     },
     {
@@ -22,7 +22,7 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Login - POST /auth/login",
+          "name": "Login - POST /api/v1/auth/login",
           "request": {
             "method": "POST",
             "header": [
@@ -88,7 +88,7 @@
       "name": "Users",
       "item": [
         {
-          "name": "Listar usuários - GET /users",
+          "name": "Listar usuários - GET /api/v1/users",
           "request": {
             "method": "GET",
             "header": [],
@@ -117,7 +117,7 @@
           ]
         },
         {
-          "name": "Criar usuário - POST /users",
+          "name": "Criar usuário - POST /api/v1/users",
           "request": {
             "method": "POST",
             "header": [
@@ -150,7 +150,7 @@
           ]
         },
         {
-          "name": "Buscar usuário por ID - GET /users/:id",
+          "name": "Buscar usuário por ID - GET /api/v1/users/:id",
           "request": {
             "method": "GET",
             "header": [],
@@ -175,7 +175,7 @@
           ]
         },
         {
-          "name": "Excluir usuário - DELETE /users/:id",
+          "name": "Excluir usuário - DELETE /api/v1/users/:id",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -200,7 +200,7 @@
           ]
         },
         {
-          "name": "Alterar senha - PATCH /users/change-password/:id",
+          "name": "Alterar senha - PATCH /api/v1/users/change-password/:id",
           "request": {
             "method": "PATCH",
             "header": [

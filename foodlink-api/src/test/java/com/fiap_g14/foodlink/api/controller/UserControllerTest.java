@@ -69,7 +69,7 @@ class UserControllerTest {
 
         when(userService.getUsers( ArgumentMatchers.any(), ArgumentMatchers.any(),  ArgumentMatchers.any()) ).thenReturn(response);
 
-        mockMvc.perform(get("/users").param("page","1").param("size","10"))
+        mockMvc.perform(get("/api/v1/users").param("page","1").param("size","10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page").value(1))
                 .andExpect(jsonPath("$.size").value(10))
@@ -91,7 +91,7 @@ class UserControllerTest {
 
         when(userService.getUsers( ArgumentMatchers.any(), ArgumentMatchers.any(),  ArgumentMatchers.any()) ).thenReturn(response);
 
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page").value(0))
                 .andExpect(jsonPath("$.size").value(10))
@@ -105,7 +105,7 @@ class UserControllerTest {
         UUID userId = UUID.randomUUID();
         doNothing().when(userService).deleteUser(userId);
 
-        mockMvc.perform(delete("/users/{id}", userId))
+        mockMvc.perform(delete("/api/v1/users/{id}", userId))
                 .andExpect(status().isNoContent());
 
         verify(userService, times(1)).deleteUser(userId);
@@ -118,7 +118,7 @@ class UserControllerTest {
         doThrow(new EntityNotFoundException("Usuário não encontrado"))
                 .when(userService).deleteUser(userId);
 
-        mockMvc.perform(delete("/users/{id}", userId))
+        mockMvc.perform(delete("/api/v1/users/{id}", userId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404))
                 .andExpect(jsonPath("$.message").value("Usuário não encontrado"));
@@ -129,7 +129,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar 400 quando ID não é um UUID válido")
     void testDeleteUserInvalidUUID() throws Exception {
-        mockMvc.perform(delete("/users/{id}", "invalid-uuid"))
+        mockMvc.perform(delete("/api/v1/users/{id}", "invalid-uuid"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.message").value("ID deve ser um UUID válido"));
@@ -142,7 +142,7 @@ class UserControllerTest {
         ChangePasswordRequestDTO request = new ChangePasswordRequestDTO("senhaAtual123", "novaSenha456");
         doNothing().when(userService).changePassword(userId, request);
 
-        mockMvc.perform(patch("/users/change-password/{id}", userId)
+        mockMvc.perform(patch("/api/v1/users/change-password/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNoContent());
@@ -158,7 +158,7 @@ class UserControllerTest {
         doThrow(new EntityNotFoundException("Usuário não encontrado"))
                 .when(userService).changePassword(userId, request);
 
-        mockMvc.perform(patch("/users/change-password/{id}", userId)
+        mockMvc.perform(patch("/api/v1/users/change-password/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
@@ -176,7 +176,7 @@ class UserControllerTest {
         doThrow(new BusinessException("Senha atual incorreta"))
                 .when(userService).changePassword(userId, request);
 
-        mockMvc.perform(patch("/users/change-password/{id}", userId)
+        mockMvc.perform(patch("/api/v1/users/change-password/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableEntity())
@@ -191,7 +191,7 @@ class UserControllerTest {
     void testChangePasswordMissingFields() throws Exception {
         UUID userId = UUID.randomUUID();
 
-        mockMvc.perform(patch("/users/change-password/{id}", userId)
+        mockMvc.perform(patch("/api/v1/users/change-password/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isUnprocessableEntity());
@@ -203,7 +203,7 @@ class UserControllerTest {
         UUID userId = UUID.randomUUID();
         ChangePasswordRequestDTO request = new ChangePasswordRequestDTO("senhaAtual123", "senhaAtual123");
 
-        mockMvc.perform(patch("/users/change-password/{id}", userId)
+        mockMvc.perform(patch("/api/v1/users/change-password/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableEntity());
@@ -215,7 +215,7 @@ class UserControllerTest {
         CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
         when(userService.createUser(any())).thenReturn(MockHelper.getMockUserResponseDTO());
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -229,7 +229,7 @@ class UserControllerTest {
         CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
         request.setNome(null);
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableContent())
@@ -243,7 +243,7 @@ class UserControllerTest {
         CreateUserRequestDTO request = MockHelper.getCreateUserRequestDTO();
         request.setEmail("emailteste.com.br");
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableContent())
@@ -265,7 +265,7 @@ class UserControllerTest {
 
         when(userService.getUserById(userId)).thenReturn(dto);
 
-        mockMvc.perform(get("/users/{id}", userId))
+        mockMvc.perform(get("/api/v1/users/{id}", userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId.toString()))
                 .andExpect(jsonPath("$.nome").value("João Silva"))
@@ -281,7 +281,7 @@ class UserControllerTest {
         when(userService.getUserById(userId))
                 .thenThrow(new EntityNotFoundException("Usuário não encontrado"));
 
-        mockMvc.perform(get("/users/{id}", userId))
+        mockMvc.perform(get("/api/v1/users/{id}", userId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404))
                 .andExpect(jsonPath("$.message").value("Usuário não encontrado"));
@@ -292,7 +292,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar 400 quando ID não é um UUID válido (GET)")
     void testGetUserByIdInvalidUUID() throws Exception {
-        mockMvc.perform(get("/users/{id}", "invalid-uuid"))
+        mockMvc.perform(get("/api/v1/users/{id}", "invalid-uuid"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.message").value("ID deve ser um UUID válido"));
