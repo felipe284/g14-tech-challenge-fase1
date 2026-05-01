@@ -7,6 +7,7 @@ import com.fiap_g14.foodlink.api.mapper.UserMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
 import com.fiap_g14.foodlink.api.repository.UserSpecification;
 import com.fiap_g14.foodlink.api.security.PasswordHasher;
+import com.fiap_g14.foodlink.api.validator.pagination.PaginationValidator;
 import com.fiap_g14.foodlink.api.validator.UserUniquenessValidator;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,12 +29,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final UserUniquenessValidator userUniquenessValidator;
+    private final PaginationValidator paginationValidator;
     private final PageResponseMapper pageResponseMapper;
     private final PasswordHasher passwordHasher;
 
     public PageResponseDTO getUsers(Integer pageActual, Integer size, String name) {
 
-        userValidator.validatePagination(pageActual, size);
+        paginationValidator.validate(pageActual, size);
 
         Pageable pageable = PageRequest.of(pageActual, size, Sort.by("nome"));
 

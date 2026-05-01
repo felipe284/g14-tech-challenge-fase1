@@ -12,6 +12,7 @@ import com.fiap_g14.foodlink.api.repository.UserRepository;
 import com.fiap_g14.foodlink.api.security.PasswordHasher;
 import com.fiap_g14.foodlink.api.validator.UserUniquenessValidator;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
+import com.fiap_g14.foodlink.api.validator.pagination.PaginationValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,9 @@ class UserServiceTest {
 
     @Mock
     private UserUniquenessValidator userUniquenessValidator;
+
+    @Mock
+    private PaginationValidator paginationValidator;
 
     @Spy
     private PageResponseMapper pageResponseMapper;
@@ -193,7 +197,7 @@ class UserServiceTest {
         var page = new PageImpl<>(java.util.List.of(user1, user2), pageable, 2);
 
         when(userRepository.findAll(ArgumentMatchers.<Specification<UserEntity>>any(), ArgumentMatchers.any(Pageable.class))).thenReturn(page);
-        doNothing().when(userValidator).validatePagination(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
+        doNothing().when(paginationValidator).validate(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
 
         var response = userService.getUsers(0, 10, null);
 
@@ -202,6 +206,7 @@ class UserServiceTest {
         assertEquals(2, response.getTotalElements());
         assertEquals(1, response.getTotalPages());
         assertEquals(2, response.getContent().size());
+        verify(paginationValidator, times(1)).validate(0, 10);
     }
 
     @Test

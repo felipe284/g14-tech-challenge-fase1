@@ -26,13 +26,4 @@ public class UserValidator {
         }
     }
 
-    public void validatePagination(Integer pageActual, Integer size) {
-        if (size < 1) {
-            throw new BusinessException("Parâmetros size devem ser maior que zero");
-        }
-
-        if (pageActual < 0) {
-            throw new BusinessException("Parâmetros page devem ser maior ou igual a zero");
-        }
-    }
 }
