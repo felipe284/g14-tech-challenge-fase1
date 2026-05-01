@@ -5,7 +5,8 @@ import com.fiap_g14.foodlink.api.dto.*;
 import com.fiap_g14.foodlink.api.mapper.PageResponseMapper;
 import com.fiap_g14.foodlink.api.mapper.UserMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
-import com.fiap_g14.foodlink.api.repository.UserSpecification;
+import com.fiap_g14.foodlink.api.repository.UserFilter;
+import com.fiap_g14.foodlink.api.repository.UserSpecificationBuilder;
 import com.fiap_g14.foodlink.api.security.PasswordHasher;
 import com.fiap_g14.foodlink.api.validator.pagination.PaginationValidator;
 import com.fiap_g14.foodlink.api.validator.UserUniquenessValidator;
@@ -30,6 +31,7 @@ public class UserService {
     private final UserValidator userValidator;
     private final UserUniquenessValidator userUniquenessValidator;
     private final PaginationValidator paginationValidator;
+    private final UserSpecificationBuilder userSpecificationBuilder;
     private final PageResponseMapper pageResponseMapper;
     private final PasswordHasher passwordHasher;
 
@@ -39,7 +41,7 @@ public class UserService {
 
         Pageable pageable = PageRequest.of(pageActual, size, Sort.by("nome"));
 
-        Specification<UserEntity> spec = UserSpecification.nomeLike(name);
+        Specification<UserEntity> spec = userSpecificationBuilder.build(new UserFilter(name));
         Page<UserEntity> page = userRepository.findAll(spec, pageable);
 
         return pageResponseMapper.toUserPageResponse(page);

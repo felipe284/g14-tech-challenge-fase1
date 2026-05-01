@@ -9,6 +9,7 @@ import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
 import com.fiap_g14.foodlink.api.helper.MockHelper;
 import com.fiap_g14.foodlink.api.mapper.PageResponseMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
+import com.fiap_g14.foodlink.api.repository.UserSpecificationBuilder;
 import com.fiap_g14.foodlink.api.security.PasswordHasher;
 import com.fiap_g14.foodlink.api.validator.UserUniquenessValidator;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
@@ -50,6 +51,9 @@ class UserServiceTest {
 
     @Mock
     private PaginationValidator paginationValidator;
+
+    @Mock
+    private UserSpecificationBuilder userSpecificationBuilder;
 
     @Spy
     private PageResponseMapper pageResponseMapper;
@@ -196,6 +200,7 @@ class UserServiceTest {
 
         var page = new PageImpl<>(java.util.List.of(user1, user2), pageable, 2);
 
+        when(userSpecificationBuilder.build(any())).thenReturn((root, query, criteriaBuilder) -> null);
         when(userRepository.findAll(ArgumentMatchers.<Specification<UserEntity>>any(), ArgumentMatchers.any(Pageable.class))).thenReturn(page);
         doNothing().when(paginationValidator).validate(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
 
@@ -207,6 +212,7 @@ class UserServiceTest {
         assertEquals(1, response.getTotalPages());
         assertEquals(2, response.getContent().size());
         verify(paginationValidator, times(1)).validate(0, 10);
+        verify(userSpecificationBuilder, times(1)).build(any());
     }
 
     @Test
@@ -216,6 +222,7 @@ class UserServiceTest {
         UserEntity user1 = MockHelper.getMockUserEntity();
         var page = new PageImpl<>(java.util.List.of(user1), pageable, 1);
 
+        when(userSpecificationBuilder.build(any())).thenReturn((root, query, criteriaBuilder) -> null);
         when(userRepository.findAll(ArgumentMatchers.<Specification<UserEntity>>any(), ArgumentMatchers.any(Pageable.class))).thenReturn(page);
 
         var response = userService.getUsers(0 , 10 , "Maria");
