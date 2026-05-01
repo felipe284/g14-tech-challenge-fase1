@@ -7,8 +7,10 @@ import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 import com.fiap_g14.foodlink.api.exception.BusinessException;
 import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
 import com.fiap_g14.foodlink.api.helper.MockHelper;
+import com.fiap_g14.foodlink.api.mapper.PageResponseMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
 import com.fiap_g14.foodlink.api.security.PasswordHasher;
+import com.fiap_g14.foodlink.api.validator.UserUniquenessValidator;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageImpl;
@@ -42,7 +45,13 @@ class UserServiceTest {
     private UserValidator userValidator;
 
     @Mock
-    private PasswordHasher passwordEncoder;
+    private UserUniquenessValidator userUniquenessValidator;
+
+    @Spy
+    private PageResponseMapper pageResponseMapper;
+
+    @Mock
+    private PasswordHasher passwordHasher;
 
     @InjectMocks
     private UserService userService;
@@ -88,18 +97,20 @@ class UserServiceTest {
                 .nome("João Silva")
                 .email("joao@email.com")
                 .login("joaosilva")
-                .senha(passwordEncoder.encode("senhaAtual123"))
+                .senha("senhaAtualCriptografada")
                 .build();
         ChangePasswordRequestDTO request = new ChangePasswordRequestDTO("senhaAtual123", "novaSenha456");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         doNothing().when(userValidator).validateChangePassword(user, request);
+        when(passwordHasher.encode("novaSenha456")).thenReturn("novaSenhaCriptografada");
 
         assertDoesNotThrow(() -> userService.changePassword(userId, request));
 
-        assertEquals( passwordEncoder.encode("novaSenha456"), user.getSenha());
+        assertEquals("novaSenhaCriptografada", user.getSenha());
         verify(userRepository, times(1)).findById(userId);
         verify(userValidator, times(1)).validateChangePassword(user, request);
+        verify(passwordHasher, times(1)).encode("novaSenha456");
         verify(userRepository, times(1)).save(user);
     }
 
@@ -150,12 +161,14 @@ class UserServiceTest {
     void testCreateUserSuccessfully() {
         CreateUserRequestDTO userRequestDTO = MockHelper.getCreateUserRequestDTO();
 
-        when(userRepository.findByEmailAndLogin(userRequestDTO.getEmail(), userRequestDTO.getLogin())).thenReturn(Optional.empty());
-        when(passwordEncoder.encode(userRequestDTO.getSenha())).thenReturn("senhaCriptografada");
+        doNothing().when(userUniquenessValidator).validateForCreate(userRequestDTO.getEmail(), userRequestDTO.getLogin());
+        when(passwordHasher.encode(userRequestDTO.getSenha())).thenReturn("senhaCriptografada");
         when(userRepository.save(any())).thenReturn(MockHelper.getMockUserEntity());
 
         UserResponseDTO responseDTO = userService.createUser(userRequestDTO);
 
+        verify(userUniquenessValidator, times(1)).validateForCreate(userRequestDTO.getEmail(), userRequestDTO.getLogin());
+        verify(passwordHasher, times(1)).encode(userRequestDTO.getSenha());
         assertEquals("Maria de Souza", responseDTO.getNome());
         assertEquals("maria@teste.com.br", responseDTO.getEmail());
         assertEquals("Mariadesouza", responseDTO.getLogin());
@@ -212,8 +225,8 @@ class UserServiceTest {
     void testThrowExceptionWhenEmailAlreadyExists() {
         CreateUserRequestDTO userRequestDTO = MockHelper.getCreateUserRequestDTO();
 
-        when(userRepository.findByEmailAndLogin(userRequestDTO.getEmail(), userRequestDTO.getLogin()))
-                .thenReturn(Optional.of(MockHelper.getMockUserEntity()));
+        doThrow(new DataAlreadyExistsException("Já existe um usuário cadastrado com o email: maria@teste.com.br ou login: Mariadesouza"))
+                .when(userUniquenessValidator).validateForCreate(userRequestDTO.getEmail(), userRequestDTO.getLogin());
 
         try{
             userService.createUser(userRequestDTO);
@@ -222,5 +235,7 @@ class UserServiceTest {
             assertEquals("Já existe um usuário cadastrado com o email: maria@teste.com.br ou login: Mariadesouza", e.getMessage());
         }
 
+        verify(userRepository, never()).save(any());
+        verify(passwordHasher, never()).encode(any());
     }
 }
