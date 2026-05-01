@@ -8,6 +8,7 @@ import com.fiap_g14.foodlink.api.exception.BusinessException;
 import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
 import com.fiap_g14.foodlink.api.helper.MockHelper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
+import com.fiap_g14.foodlink.api.security.PasswordHasher;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +42,7 @@ class UserServiceTest {
     private UserValidator userValidator;
 
     @Mock
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordHasher passwordEncoder;
 
     @InjectMocks
     private UserService userService;

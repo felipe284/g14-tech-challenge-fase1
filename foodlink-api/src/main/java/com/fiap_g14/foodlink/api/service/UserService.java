@@ -6,14 +6,12 @@ import com.fiap_g14.foodlink.api.dto.*;
 import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
 import com.fiap_g14.foodlink.api.mapper.UserMapper;
 import com.fiap_g14.foodlink.api.repository.UserRepository;
+import com.fiap_g14.foodlink.api.security.PasswordHasher;
 import com.fiap_g14.foodlink.api.validator.UserValidator;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserValidator userValidator;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordHasher passwordEncoder;
 
     public PageResponseDTO getUsers(Integer pageActual, Integer size, String name) {
 
