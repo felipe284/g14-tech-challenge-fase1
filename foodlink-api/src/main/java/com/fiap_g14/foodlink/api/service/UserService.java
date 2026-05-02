@@ -86,6 +86,7 @@ public class UserService {
 
         UserMapper.updateEntity(dto, user);
 
+        userRepository.save(user);
         return UserMapper.toDTO(user);
     }
 }
