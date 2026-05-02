@@ -35,11 +35,11 @@ public class UserService {
     private final PageResponseMapper pageResponseMapper;
     private final PasswordHasher passwordHasher;
 
-    public PageResponseDTO getUsers(Integer pageActual, Integer size, String name) {
+    public PageResponseDTO getUsers(Integer currentPage, Integer size, String name) {
 
-        paginationValidator.validate(pageActual, size);
+        paginationValidator.validate(currentPage, size);
 
-        Pageable pageable = PageRequest.of(pageActual, size, Sort.by("nome"));
+        Pageable pageable = PageRequest.of(currentPage, size, Sort.by("nome"));
 
         Specification<UserEntity> spec = userSpecificationBuilder.build(new UserFilter(name));
         Page<UserEntity> page = userRepository.findAll(spec, pageable);

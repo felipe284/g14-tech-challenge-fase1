@@ -10,11 +10,11 @@ public class UserNameSpecificationRule implements UserSpecificationRule {
     @Override
     public Specification<UserEntity> build(UserFilter filter) {
         return (root, query, criteriaBuilder) -> {
-            if (filter.name() == null || filter.name().isBlank()) {
+            if (filter.getName() == null || filter.getName().isBlank()) {
                 return null;
             }
 
-            String pattern = "%" + filter.name().toLowerCase() + "%";
+            String pattern = "%" + filter.getName().toLowerCase() + "%";
             return criteriaBuilder.like(criteriaBuilder.lower(root.get("nome")), pattern);
         };
     }
