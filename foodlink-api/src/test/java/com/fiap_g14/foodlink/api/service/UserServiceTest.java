@@ -3,6 +3,7 @@ package com.fiap_g14.foodlink.api.service;
 import com.fiap_g14.foodlink.api.domain.UserEntity;
 import com.fiap_g14.foodlink.api.dto.ChangePasswordRequestDTO;
 import com.fiap_g14.foodlink.api.dto.CreateUserRequestDTO;
+import com.fiap_g14.foodlink.api.dto.UpdateUserRequestDTO;
 import com.fiap_g14.foodlink.api.dto.UserResponseDTO;
 import com.fiap_g14.foodlink.api.exception.BusinessException;
 import com.fiap_g14.foodlink.api.exception.DataAlreadyExistsException;
@@ -33,6 +34,8 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.fiap_g14.foodlink.api.helper.MockHelper.getMockUpdateUserRequestDTO;
+import static com.fiap_g14.foodlink.api.helper.MockHelper.getMockUserEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -171,7 +174,7 @@ class UserServiceTest {
 
         doNothing().when(userUniquenessValidator).validateForCreate(userRequestDTO.getEmail(), userRequestDTO.getLogin());
         when(passwordHasher.encode(userRequestDTO.getSenha())).thenReturn("senhaCriptografada");
-        when(userRepository.save(any())).thenReturn(MockHelper.getMockUserEntity());
+        when(userRepository.save(any())).thenReturn(getMockUserEntity());
 
         UserResponseDTO responseDTO = userService.createUser(userRequestDTO);
 
@@ -188,7 +191,7 @@ class UserServiceTest {
     void testGetAllUsersWithPagination() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
-        UserEntity user1 = MockHelper.getMockUserEntity();
+        UserEntity user1 = getMockUserEntity();
         UserEntity user2 = UserEntity.builder()
                 .id(java.util.UUID.randomUUID())
                 .nome("Carlos")
@@ -219,7 +222,7 @@ class UserServiceTest {
     @DisplayName("Deve filtrar usuários por nome com paginação")
     void testGetAllUsersWithNameFilter() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
-        UserEntity user1 = MockHelper.getMockUserEntity();
+        UserEntity user1 = getMockUserEntity();
         var page = new PageImpl<>(java.util.List.of(user1), pageable, 1);
 
         when(userSpecificationBuilder.build(any())).thenReturn((root, query, criteriaBuilder) -> null);
@@ -229,7 +232,7 @@ class UserServiceTest {
 
         assertEquals(1, response.getTotalElements());
         assertEquals(1, response.getContent().size());
-        assertEquals("Maria de Souza", response.getContent().get(0).getNome());
+        assertEquals("Maria de Souza", response.getContent().getFirst().getNome());
     }
 
     @Test
@@ -250,4 +253,46 @@ class UserServiceTest {
         verify(userRepository, never()).save(any());
         verify(passwordHasher, never()).encode(any());
     }
+
+    @Test
+    @DisplayName("Deve alterar os dados do usuário com sucesso")
+    void testUpdateUserSuccess() {
+        UUID userId = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
+        UserEntity existingUser = getMockUserEntity();
+        UserEntity updatedUser = MockHelper.getUpdatedMockUserEntity();
+        UpdateUserRequestDTO userRequestDTO = getMockUpdateUserRequestDTO();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        doNothing().when(userUniquenessValidator).validateForUpdate(any(), any(), any());
+        when(userRepository.save(any(UserEntity.class))).thenReturn(updatedUser);
+
+        UserResponseDTO responseDTO = userService.updateUser(userId, userRequestDTO);
+
+        assertEquals("mariaNova@teste.com.br", responseDTO.getEmail());
+        assertEquals("Mariazinhadesouza", responseDTO.getLogin());
+        assertEquals("Maria de Souza", responseDTO.getNome());
+        assertEquals("Rua teste 2", responseDTO.getEndereco().getLogradouro());
+        assertEquals("101", responseDTO.getEndereco().getNumero());
+        assertEquals("Apartamento", responseDTO.getEndereco().getComplemento());
+
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve lançar EntityNotFoundException ao tentar atualizar um usuário inexistente")
+    void testUpdateUserNotFound() {
+        UpdateUserRequestDTO request = getMockUpdateUserRequestDTO();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> userService.updateUser(userId, request)
+        );
+
+        assertEquals("Usuário não encontrado", exception.getMessage());
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).save(any());
+
+    }
+
 }
