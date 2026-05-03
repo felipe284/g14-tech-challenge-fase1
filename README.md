@@ -46,7 +46,7 @@ cd foodlink-api
 docker compose up --build
 ```
 
-Depois do startup, a API estará disponível por padrão em http://localhost:8080. 
+Depois do startup, a API estará disponível por padrão em http://localhost:8080/api/v1. 
 
 ---
 
@@ -85,11 +85,11 @@ Este repositório inclui um Postman Collection que facilita testar os endpoints 
 Para facilitar o uso ao importar a collection, a coleção inclui variáveis e um script automático que preenche `{{userId}}` após o login.
 
 - Variáveis da collection (já incluídas no JSON):
-  - `baseUrl` — URL base da API (padrão: `http://localhost:8080`).
+  - `baseUrl` — URL base da API (padrão: `http://localhost:8080/api/v1`).
   - `userId` — vazio por padrão; será preenchido automaticamente pelo script de login. 
 - Script de login:
-  - O request `Auth > Login - POST /auth/login` contém um script na aba "Tests" que extrai `userId` do corpo da resposta e define a variável de collection `userId` automaticamente.
-  - Assim, ao executar o request de login no Postman, as requests seguintes que usam `{{userId}}` (ex.: `GET /users/{{userId}}`) usarão o valor retornado pelo servidor.
+  - O request `Auth > Login - POST /api/v1/auth/login` contém um script na aba "Tests" que extrai `userId` do corpo da resposta e define a variável de collection `userId` automaticamente.
+  - Assim, ao executar o request de login no Postman, as requests seguintes que usam `{{userId}}` (ex.: `GET /api/v1/users/{{userId}}`) usarão o valor retornado pelo servidor.
 
 # Estrutura do projeto (resumo)
 

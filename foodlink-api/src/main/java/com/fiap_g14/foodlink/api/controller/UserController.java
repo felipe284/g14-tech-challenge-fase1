@@ -1,6 +1,7 @@
 package com.fiap_g14.foodlink.api.controller;
 
 
+import com.fiap_g14.foodlink.api.config.ApiVersion;
 import com.fiap_g14.foodlink.api.dto.*;
 import com.fiap_g14.foodlink.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @Tag(name = "Usuários")
 @RestController
-@RequestMapping("/users")
+@RequestMapping(ApiVersion.V1 + "/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -29,7 +30,7 @@ public class UserController {
     @GetMapping()
     public PageResponseDTO getAllUsers(@RequestParam(required = false, defaultValue = "0") Integer page,
                                       @RequestParam(required = false , defaultValue = "10") Integer size,
-                                      @RequestParam(required = false, name = "name") String name) {
+                                      @RequestParam(required = false, name = "nome") String name) {
         return service.getUsers(page , size , name );
     }
 

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
 
     public LoginResponseDTO validateLogin(LoginRequestDTO request) {

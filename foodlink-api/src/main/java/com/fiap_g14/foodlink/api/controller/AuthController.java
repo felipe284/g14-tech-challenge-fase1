@@ -1,5 +1,6 @@
 package com.fiap_g14.foodlink.api.controller;
 
+import com.fiap_g14.foodlink.api.config.ApiVersion;
 import com.fiap_g14.foodlink.api.dto.LoginRequestDTO;
 import com.fiap_g14.foodlink.api.dto.LoginResponseDTO;
 import com.fiap_g14.foodlink.api.service.AuthService;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name = "Autenticação Usuários")
-@RequestMapping("/auth")
+@RequestMapping(ApiVersion.V1 + "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

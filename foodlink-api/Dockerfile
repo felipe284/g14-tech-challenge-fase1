@@ -13,7 +13,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
-RUN ls -la /app/target
 
 COPY --from=build /app/target/*.jar app.jar
 
