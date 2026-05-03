@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d1708fb8-6231-46f5-ae25-d25db251792f",
+		"_postman_id": "bb8f4637-e955-44d1-b098-a624dc278401",
 		"name": "Foodlink API - G14",
 		"description": "Foodlink API - G14",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7535924"
 	},
 	"item": [
@@ -49,7 +49,16 @@
 									"mode": "raw",
 									"raw": "{\n  \"login\": \"carlos.pereira\",\n  \"senha\": \"123456789\"\n}"
 								},
-								"url": "{{baseUrl}}/auth/login"
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
 							},
 							"response": [
 								{
@@ -66,7 +75,16 @@
 											"mode": "raw",
 											"raw": "{\n  \"login\": \"carlos.pereira\",\n  \"senha\": \"123456789\"\n}"
 										},
-										"url": "{{baseUrl}}/auth/login"
+										"url": {
+											"raw": "{{baseUrl}}/auth/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
 									},
 									"status": "OK",
 									"code": 200,
@@ -156,6 +174,74 @@
 							]
 						},
 						{
+							"name": "Listar usuários - Filtro por nome - GET /api/v1/users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?page=0&size=10&nome=Maria",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "nome",
+											"value": "Maria"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200 - Exemplo",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users?page=0&size=10&nome=",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "10"
+												},
+												{
+													"key": "nome",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "Text",
+									"header": [],
+									"cookie": [],
+									"body": "{\n  \"content\": [\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000001\",\n      \"nome\": \"João Silva\",\n      \"email\": \"joao.silva@email.com\",\n      \"login\": \"joao.silva\",\n      \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n      \"endereco\": {\n        \"logradouro\": \"Rua das Flores\",\n        \"numero\": \"123\",\n        \"complemento\": \"Apto 101\",\n        \"bairro\": \"Centro\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01000-000\"\n      }\n    },\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000002\",\n      \"nome\": \"Maria Souza\",\n      \"email\": \"maria.souza@email.com\",\n      \"login\": \"maria.souza\",\n      \"dataUltimaAlteracao\": \"2025-01-01T12:00:00Z\",\n      \"endereco\": {\n        \"logradouro\": \"Av. Paulista\",\n        \"numero\": \"1000\",\n        \"complemento\": \"Sala 202\",\n        \"bairro\": \"Bela Vista\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01310-100\"\n      }\n    }\n  ],\n  \"page\": 0,\n  \"size\": 10,\n  \"totalElements\": 2,\n  \"totalPages\": 1\n}"
+								}
+							]
+						},
+						{
 							"name": "Criar usuário - POST /api/v1/users",
 							"request": {
 								"method": "POST",
@@ -169,7 +255,15 @@
 									"mode": "raw",
 									"raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"senha\": \"123456789\",\n  \"tipoUsuario\": \"CLIENTE\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
 								},
-								"url": "{{baseUrl}}/users"
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
 							},
 							"response": [
 								{
@@ -186,7 +280,15 @@
 											"mode": "raw",
 											"raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"senha\": \"123456789\",\n  \"tipoUsuario\": \"CLIENTE\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
 										},
-										"url": "{{baseUrl}}/users"
+										"url": {
+											"raw": "{{baseUrl}}/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											]
+										}
 									},
 									"status": "Created",
 									"code": 201,
@@ -202,7 +304,16 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{baseUrl}}/users/{{userId}}"
+								"url": {
+									"raw": "{{baseUrl}}/users/{{userId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
 							},
 							"response": [
 								{
@@ -210,7 +321,16 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": "{{baseUrl}}/users/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{userId}}"
+											]
+										}
 									},
 									"status": "OK",
 									"code": 200,
@@ -226,7 +346,16 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/users/{{userId}}"
+								"url": {
+									"raw": "{{baseUrl}}/users/{{userId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
 							},
 							"response": [
 								{
@@ -234,7 +363,16 @@
 									"originalRequest": {
 										"method": "DELETE",
 										"header": [],
-										"url": "{{baseUrl}}/users/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{userId}}"
+											]
+										}
 									},
 									"status": "No Content",
 									"code": 204,
@@ -259,7 +397,17 @@
 									"mode": "raw",
 									"raw": "{\n  \"senhaAtual\": \"123456789\",\n  \"novaSenha\": \"novaSenhaSegura456\"\n}"
 								},
-								"url": "{{baseUrl}}/users/change-password/{{userId}}"
+								"url": {
+									"raw": "{{baseUrl}}/users/change-password/{{userId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"change-password",
+										"{{userId}}"
+									]
+								}
 							},
 							"response": [
 								{
@@ -276,7 +424,17 @@
 											"mode": "raw",
 											"raw": "{\n  \"senhaAtual\": \"123456789\",\n  \"novaSenha\": \"novaSenhaSegura456\"\n}"
 										},
-										"url": "{{baseUrl}}/users/change-password/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/change-password/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"change-password",
+												"{{userId}}"
+											]
+										}
 									},
 									"status": "No Content",
 									"code": 204,
@@ -301,7 +459,16 @@
 									"mode": "raw",
 									"raw": "{\n    \"login\": \"carlos.pereira\",\n    \"nome\": \"Carlos Pereira\",\n    \"tipoUsuario\": \"CLIENTE\",\n    \"email\": \"carlos.pereira@email.com\",\n    \"endereco\": {\n        \"logradouro\": \"Rua Augusta\",\n        \"numero\": \"500\",\n        \"complemento\": null,\n        \"bairro\": \"Consolação\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01305-000\"\n    }\n}"
 								},
-								"url": "{{baseUrl}}/users/{{userId}}"
+								"url": {
+									"raw": "{{baseUrl}}/users/{{userId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
 							},
 							"response": [
 								{
@@ -318,7 +485,16 @@
 											"mode": "raw",
 											"raw": "{\n    \"login\": \"carlos.pereira\",\n    \"nome\": \"Carlos Pereira\",\n    \"tipoUsuario\": \"CLIENTE\",\n    \"email\": \"carlos.pereira@email.com\",\n    \"endereco\": {\n        \"logradouro\": \"Rua Augusta\",\n        \"numero\": \"500\",\n        \"complemento\": null,\n        \"bairro\": \"Consolação\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01305-000\"\n    }\n}"
 										},
-										"url": "{{baseUrl}}/users/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{userId}}"
+											]
+										}
 									},
 									"status": "Created",
 									"code": 201,
@@ -375,14 +551,26 @@
 									"mode": "raw",
 									"raw": "{\n  \"login\": \"joao.silva123456\",\n  \"senha\": \"123456789\"\n}"
 								},
-								"url": "{{baseUrl}}/auth/login"
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
 							},
 							"response": [
 								{
 									"name": "401 - Exemplo de resposta",
 									"originalRequest": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": {
+											"raw": ""
+										}
 									},
 									"status": "- Credenciais inválidas",
 									"code": 401,
@@ -434,14 +622,26 @@
 									"mode": "raw",
 									"raw": "{\n  \"logins\": \"joao.silva\",\n  \"senhas\": \"123456789\"\n}"
 								},
-								"url": "{{baseUrl}}/auth/login"
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
 							},
 							"response": [
 								{
 									"name": "401 - Exemplo de resposta",
 									"originalRequest": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": {
+											"raw": ""
+										}
 									},
 									"status": "- Dados de entrada inválidos",
 									"code": 422,
@@ -499,7 +699,10 @@
 											"name": "422 - Exemplo ERRO SIZE",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Error no campo size",
 											"code": 422,
@@ -544,7 +747,10 @@
 											"name": "422 - Exemplo de Erro e  page",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Error no campo Page",
 											"code": 422,
@@ -574,14 +780,25 @@
 											"mode": "raw",
 											"raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"senha\": \"123456789\",\n  \"tipoUsuario\": \"CLIENTE\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
 										},
-										"url": "{{baseUrl}}/users"
+										"url": {
+											"raw": "{{baseUrl}}/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "409 -  Dados já existem na base",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "-  Dados já existem na base",
 											"code": 409,
@@ -606,14 +823,25 @@
 											"mode": "raw",
 											"raw": "{\n \n}"
 										},
-										"url": "{{baseUrl}}/users"
+										"url": {
+											"raw": "{{baseUrl}}/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "422 -  Dados Obrigatorios",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": " 422 -  Dados Obrigatorios",
 											"_postman_previewlanguage": "Text",
@@ -637,14 +865,25 @@
 											"mode": "raw",
 											"raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"login\": \"joao.silva\",\n  \"senha\": \"1234567\",\n  \"tipoUsuario\": \"CLIENTE\",\n  \"endereco\": {\n    \"logradouro\": \"Rua das Flores\",\n    \"numero\": \"123\",\n    \"complemento\": \"Apto 101\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"São Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
 										},
-										"url": "{{baseUrl}}/users"
+										"url": {
+											"raw": "{{baseUrl}}/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "422 -  ERRO LIMITE DE SENHA",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "-  ERRO LIMITE DE SENHA",
 											"code": 422,
@@ -665,14 +904,26 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040"
+										"url": {
+											"raw": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"1f3d6eaf-37eb-41fa-825a-8a6165014040"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "404 - Usuario não encontrado",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Usuario não encontrado",
 											"code": 404,
@@ -688,14 +939,26 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"url": "{{baseUrl}}/users/123456789"
+										"url": {
+											"raw": "{{baseUrl}}/users/123456789",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"123456789"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "400 - Formato UUID inválido",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Formato UUID inválido",
 											"code": 400,
@@ -716,14 +979,26 @@
 									"request": {
 										"method": "DELETE",
 										"header": [],
-										"url": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040"
+										"url": {
+											"raw": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"1f3d6eaf-37eb-41fa-825a-8a6165014040"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "404 - Usuario não encontrado",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Usuario não encontrado",
 											"code": 404,
@@ -739,14 +1014,26 @@
 									"request": {
 										"method": "DELETE",
 										"header": [],
-										"url": "{{baseUrl}}/users/123456789"
+										"url": {
+											"raw": "{{baseUrl}}/users/123456789",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"123456789"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "400 - Formato UUID inválido",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Formato UUID inválido",
 											"code": 400,
@@ -776,14 +1063,27 @@
 											"mode": "raw",
 											"raw": "{\n  \"senhaAtual\": \"123456789\",\n  \"novaSenha\": \"novaSenhaSegura456\"\n}"
 										},
-										"url": "{{baseUrl}}/users/change-password/1f3d6eaf-37eb-41fa-825a-8a6165014040"
+										"url": {
+											"raw": "{{baseUrl}}/users/change-password/1f3d6eaf-37eb-41fa-825a-8a6165014040",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"change-password",
+												"1f3d6eaf-37eb-41fa-825a-8a6165014040"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "404 - Usuario não encontrado",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Usuario não encontrado",
 											"code": 404,
@@ -808,14 +1108,27 @@
 											"mode": "raw",
 											"raw": "{\n  \"senhaAtual\": \"12345678999\",\n  \"novaSenha\": \"novaSenhaSegura456\"\n}"
 										},
-										"url": "{{baseUrl}}/users/change-password/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/change-password/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"change-password",
+												"{{userId}}"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "422 -  Senha atual incorreta",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "-  Senha atual incorreta",
 											"code": 422,
@@ -840,14 +1153,27 @@
 											"mode": "raw",
 											"raw": "{\n  \"senhaAtual\": \"123456789\",\n  \"novaSenha\": \"123456789\"\n}"
 										},
-										"url": "{{baseUrl}}/users/change-password/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/change-password/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"change-password",
+												"{{userId}}"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "422 - Senha atual nao pode ser igual a nova",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Senha atual nao pode ser igual a nova ",
 											"code": 422,
@@ -877,14 +1203,26 @@
 											"mode": "raw",
 											"raw": "{\n    \"login\": \"carlos.pereira\",\n    \"nome\": \"Carlos Pereira\",\n    \"tipoUsuario\": \"CLIENTE\",\n    \"email\": \"carlos.pereira@email.com\",\n    \"endereco\": {\n        \"logradouro\": \"Rua Augusta\",\n        \"numero\": \"500\",\n        \"complemento\": null,\n        \"bairro\": \"Consolação\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01305-000\"\n    }\n}"
 										},
-										"url": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040"
+										"url": {
+											"raw": "{{baseUrl}}/users/1f3d6eaf-37eb-41fa-825a-8a6165014040",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"1f3d6eaf-37eb-41fa-825a-8a6165014040"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "404 - Usuário não encontrado",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "- Usuário não encontrado",
 											"code": 404,
@@ -909,14 +1247,26 @@
 											"mode": "raw",
 											"raw": "{\n    \"login\": \"carlos.pereira\",\n    \"nome\": \"Carlos Pereira\",\n    \"tipoUsuario\": \"CLIENTE\",\n    \"email\": \"joao.silva@email.com\",\n    \"endereco\": {\n        \"logradouro\": \"Rua Augusta\",\n        \"numero\": \"500\",\n        \"complemento\": null,\n        \"bairro\": \"Consolação\",\n        \"cidade\": \"São Paulo\",\n        \"uf\": \"SP\",\n        \"cep\": \"01305-000\"\n    }\n}"
 										},
-										"url": "{{baseUrl}}/users/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{userId}}"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "409 -  Dados já existem na base",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "-  Dados já existem na base",
 											"code": 409,
@@ -941,14 +1291,26 @@
 											"mode": "raw",
 											"raw": "{    \n}"
 										},
-										"url": "{{baseUrl}}/users/{{userId}}"
+										"url": {
+											"raw": "{{baseUrl}}/users/{{userId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"{{userId}}"
+											]
+										}
 									},
 									"response": [
 										{
 											"name": "422 -  Dados Obrigatorios",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"status": "-  Dados Obrigatorios",
 											"code": 422,
